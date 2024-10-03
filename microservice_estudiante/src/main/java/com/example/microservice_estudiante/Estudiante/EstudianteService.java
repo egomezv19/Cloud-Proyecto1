@@ -13,23 +13,23 @@ public class EstudianteService {
     @Autowired
     private EstudianteRepository estudianteRepository;
 
-    // Obtener todos los estudiantes
+
     public List<Estudiante> getAllEstudiantes() {
         return estudianteRepository.findAll();
     }
 
-    // Obtener un estudiante por id
+
     public Estudiante getEstudianteById(Long id) {
         return estudianteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Estudiante no encontrado con id: " + id));
     }
 
-    // Crear un nuevo estudiante
+
     public Estudiante saveEstudiante(Estudiante estudiante) {
         return estudianteRepository.save(estudiante);
     }
 
-    // Actualizar un estudiante existente
+
     public Estudiante updateEstudiante(Long id, Estudiante estudianteDetails) {
         Estudiante estudiante = estudianteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Estudiante no encontrado con id: " + id));
@@ -42,7 +42,7 @@ public class EstudianteService {
         return estudianteRepository.save(estudiante);
     }
 
-    // Eliminar un estudiante
+
     public void deleteEstudiante(Long id) {
         Estudiante estudiante = estudianteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Estudiante no encontrado con id: " + id));

@@ -12,23 +12,23 @@ public class ProgramaService {
     @Autowired
     private ProgramaRepository programaRepository;
 
-    // Obtener todos los programas
+
     public List<Programa> getAllProgramas() {
         return programaRepository.findAll();
     }
 
-    // Obtener un programa por id
+
     public Programa getProgramaById(Long id) {
         return programaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Programa no encontrado con id: " + id));
     }
 
-    // Crear un nuevo programa
+
     public Programa savePrograma(Programa programa) {
         return programaRepository.save(programa);
     }
 
-    // Actualizar un programa existente
+
     public Programa updatePrograma(Long id, Programa programaDetails) {
         Programa programa = programaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Programa no encontrado con id: " + id));
@@ -41,7 +41,7 @@ public class ProgramaService {
         return programaRepository.save(programa);
     }
 
-    // Eliminar un programa
+
     public void deletePrograma(Long id) {
         Programa programa = programaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Programa no encontrado con id: " + id));
