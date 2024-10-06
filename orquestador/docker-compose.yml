@@ -1,0 +1,33 @@
+version: '3'
+services:
+  orchestrator:
+    build: ./orquestador   # Build de la carpeta donde está el orquestador
+    ports:
+      - "5000:5000"               # Exponer el puerto 5000 para el orquestador
+    networks:
+      - my_network
+
+  microservice1:
+    image: microservice_estudiante    # nombre del microservicio 1
+    networks:
+      - my_network
+    ports:
+      - "8080:8080"               # Exponer el puerto 8081 para el microservicio 1
+
+  microservice2:
+    image: microservice2_image    # Imagen del microservicio 2
+    networks:
+      - my_network
+    ports:
+      - "8082:8080"               # Exponer el puerto 8082 para el microservicio 2
+
+  microservice3:
+    image: microservice3_image    # Imagen del microservicio 3
+    networks:
+      - my_network
+    ports:
+      - "8083:8080"               # Exponer el puerto 8083 para el microservicio 3
+
+networks:
+  my_network:
+    driver: bridge                # Crear una red interna para todos los servicios
