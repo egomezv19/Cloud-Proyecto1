@@ -1,20 +1,20 @@
-# Utiliza una imagen base oficial de Node.js
+# Usa la imagen oficial de Node.js como base
 FROM node:14
 
-# Establece el directorio de trabajo dentro del contenedor
+# Establece el directorio de trabajo en el contenedor
 WORKDIR /app
 
-# Copia el archivo de dependencias package.json y package-lock.json
+# Copia el archivo package.json y package-lock.json
 COPY package*.json ./
 
-# Instala las dependencias de Node.js
+# Instala las dependencias del proyecto
 RUN npm install
 
-# Copia todo el resto del código de la aplicación al contenedor
+# Copia el resto del código de la aplicación
 COPY . .
 
-# Expone el puerto que tu aplicación utilizará
+# Expone el puerto en el que correrá la aplicación
 EXPOSE 3000
 
-# Define el comando que se ejecutará cuando el contenedor arranque
-CMD ["node", "ingest_mongodb.js"]
+# Comando para iniciar la aplicación
+CMD ["npm", "start"]
