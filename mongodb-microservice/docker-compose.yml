@@ -13,12 +13,13 @@ services:
     depends_on:
       - mongodb
     ports:
-      - "3000:3000"
+      - "8080:8080"  # Cambia el puerto aquí a 8080
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/universidad
+      - PORT=8080  # Añade esta línea para pasar el puerto correcto
     volumes:
       - ./data:/app/data
-    command: ["node", "ingest_mongodb.js"]
+    command: ["node", "app.js"]  # Asegúrate de que app.js es el punto de entrada correcto
 
 volumes:
   mongo-data:

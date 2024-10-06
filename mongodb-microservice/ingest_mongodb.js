@@ -1,10 +1,17 @@
-const fs = require('fs');
 const mongoose = require('mongoose');
+const fs = require('fs');
 
-// Conexión a MongoDB
-mongoose.connect('mongodb://localhost:27017/universidad', { useNewUrlParser: true, useUnifiedTopology: true });
+// Conectar a MongoDB
+mongoose.connect('mongodb://localhost:27017/universidad', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => {
+  console.log('Conectado a MongoDB');
+}).catch((error) => {
+  console.error('Error al conectar a MongoDB:', error);
+});
 
-// Definición del esquema y modelo para Alojamiento
+// Definir el esquema de Alojamiento
 const alojamientoSchema = new mongoose.Schema({
   ID_Alojamiento: String,
   ID_Programa: String,
@@ -13,38 +20,19 @@ const alojamientoSchema = new mongoose.Schema({
   Precio: Number
 });
 
+// Crear el modelo
 const Alojamiento = mongoose.model('Alojamiento', alojamientoSchema);
 
-// Definición del esquema y modelo para Pago
-const pagoSchema = new mongoose.Schema({
-  ID_Pago: String,
-  ID_Inscripción: String,
-  Monto: Number,
-  Fecha_Pago: String,
-  Metodo_Pago: String
-});
+// Leer el archivo JSON
+const alojamientosData = JSON.parse(fs.readFileSync('./data/alojamientos.json', 'utf8'));
 
-const Pago = mongoose.model('Pago', pagoSchema);
-
-// Cargar datos de Alojamiento desde el archivo JSON
-const alojamientos = JSON.parse(fs.readFileSync('./data/alojamientos.json', 'utf8'));
-
-// Cargar datos de Pago desde el archivo JSON
-const pagos = JSON.parse(fs.readFileSync('./data/pagos.json', 'utf8'));
-
-// Insertar los datos en MongoDB
-Alojamiento.insertMany(alojamientos, (err, docs) => {
-  if (err) {
-    console.error('Error al insertar alojamientos:', err);
-  } else {
-    console.log('Alojamientos insertados con éxito:', docs);
-  }
-});
-
-Pago.insertMany(pagos, (err, docs) => {
-  if (err) {
-    console.error('Error al insertar pagos:', err);
-  } else {
-    console.log('Pagos insertados con éxito:', docs);
-  }
-});
+// Insertar los datos en la base de datos
+Alojamiento.insertMany(alojamientosData)
+  .then(() => {
+    console.log('Datos de alojamientos insertados correctamente.');
+    mongoose.connection.close();
+  })
+  .catch((err) => {
+    console.error('Error al insertar datos: ', err);
+    mongoose.connection.close();
+  });
