@@ -1,0 +1,116 @@
+version: '3.8'
+
+services:
+
+
+  microservicio1:
+    image: microservicio1_image
+    build:
+      context: ./ms1
+      dockerfile: Dockerfile
+    container_name: microservicio1
+    ports:
+      - "8081:8080"  
+    networks:
+      - my-network
+    depends_on:
+      - db1
+    environment:
+      - DATABASE_URL=mysql://user:password@db1/microservicio1db
+
+
+  microservicio2:
+    image: microservicio2_image
+    build:
+      context: ./ms2
+      dockerfile: Dockerfile
+    container_name: microservicio2
+    ports:
+      - "8082:8080" 
+    networks:
+      - my-network
+    depends_on:
+      - db2
+    environment:
+      - DATABASE_URL=mysql://user:password@db2/microservicio2db
+
+
+  microservicio3:
+    image: microservicio3_image
+    container_name: microservicio3
+    ports:
+      - "8080:8080"  
+    networks:
+      - my-network
+    depends_on:
+      - db3
+    environment:
+      - DATABASE_URL=mongodb://db3/microservicio3db
+
+
+  orquestador:
+    image: orquestador_image
+    build:
+      context: ./orquestador
+      dockerfile: Dockerfile
+    container_name: orquestador
+    ports:
+      - "5000:8080" 
+    networks:
+      - my-network
+    depends_on:
+      - microservicio1
+      - microservicio2
+      - microservicio3
+    environment:
+      - MS1_URL=http://microservicio1:8080
+      - MS2_URL=http://microservicio2:8080
+      - MS3_URL=http://microservicio3:8080
+
+
+  db1:
+    image: mysql:8
+    container_name: db1
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: microservicio1db
+    ports:
+      - "3307:3306"  
+    networks:
+      - my-network
+    volumes:
+      - db1_data:/var/lib/mysql
+
+ 
+  db2:
+    image: mysql:8
+    container_name: db2
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: microservicio2db
+    ports:
+      - "3308:3306"  
+    networks:
+      - my-network
+    volumes:
+      - db2_data:/var/lib/mysql
+
+
+  db3:
+    image: mongo:latest
+    container_name: db3
+    ports:
+      - "27018:27017" 
+    networks:
+      - my-network
+    volumes:
+      - db3_data:/data/db
+
+networks:
+  my-network:
+    driver: bridge
+
+volumes:
+  db1_data:
+  db2_data:
+  db3_data:

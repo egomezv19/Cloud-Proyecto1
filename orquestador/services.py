@@ -1,26 +1,38 @@
-import requests
+import httpx
 
-# URLs de los microservicios (ajusta según sea necesario)
-MICROSERVICE_1_URL = 'http://microservice1:8081/api/estudiantes'
-MICROSERVICE_2_URL = 'http://microservice2:8082/api/empleos'
-MICROSERVICE_3_URL = 'http://microservice3:8083/api/empresas'
 
-def call_microservices():
-    # Hacer llamadas a los microservicios
-    response1 = requests.get(MICROSERVICE_1_URL)
-    data1 = response1.json()
+MS1_URL_ESTUDIANTES = 'http://microservicio1:8080/estudiantes'
+MS2_URL_EMPRESAS = 'http://microservicio2:8080/empresas'
+MS2_URL_PROGRAMAS = 'http://microservicio2:8080/programas'
+MS3_URL_PAGOS = 'http://microservicio3:8080/pagos'
 
-    response2 = requests.get(MICROSERVICE_2_URL)
-    data2 = response2.json()
 
-    response3 = requests.get(MICROSERVICE_3_URL)
-    data3 = response3.json()
+async def get_estudiantes():
+    async with httpx.AsyncClient() as client:
+        response = await client.get(MS1_URL_ESTUDIANTES)
+        if response.status_code != 200:
+            raise Exception("Error al obtener estudiantes desde MS1")
+        return response.json()
 
-    # Combinar las respuestas de los microservicios
-    combined_response = {
-        'estudiantes': data1,
-        'empleos': data2,
-        'pagos': data3
-    }
+async def get_empresas():
+    async with httpx.AsyncClient() as client:
+        response = await client.get(MS2_URL_EMPRESAS)
+        if response.status_code != 200:
+            raise Exception("Error al obtener empresas desde MS2")
+        return response.json()
 
-    return combined_response
+
+async def get_programas():
+    async with httpx.AsyncClient() as client:
+        response = await client.get(MS2_URL_PROGRAMAS)
+        if response.status_code != 200:
+            raise Exception("Error al obtener programas desde MS2 invocando a MS1")
+        return response.json()
+
+
+async def get_pagos():
+    async with httpx.AsyncClient() as client:
+        response = await client.get(MS3_URL_PAGOS)
+        if response.status_code != 200:
+            raise Exception("Error al obtener pagos desde MS3")
+        return response.json()
