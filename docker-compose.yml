@@ -3,7 +3,7 @@ version: '3.8'
 services:
 
   microservicio_empresa_empleo:
-    build: ./ms1  # Directorio donde está el Dockerfile del microservicio
+    build: ./microservicio_empresa_empleo  # Directorio donde está el Dockerfile del microservicio
     container_name: microservicio_empresa_empleo
     ports:
       - "8081:8080"  
@@ -19,7 +19,7 @@ services:
       MYSQL_PORT: 3306
 
   microservicio_estudiante_programa:
-    build: ./ms2  # Directorio donde está el Dockerfile del microservicio
+    build: ./service_new  # Directorio donde está el Dockerfile del microservicio
     container_name: microservicio_estudiante_programa
     ports:
       - "8082:8080" 
@@ -34,7 +34,7 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
 
   microservicio_pago_alojamiento:
-    build: ./ms3  # Directorio donde está el Dockerfile del microservicio
+    build: ./mongodb-microservice  # Directorio donde está el Dockerfile del microservicio
     container_name: microservicio_pago_alojamiento
     ports:
       - "8083:8080"  
