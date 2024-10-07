@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 
+
 class EmpresaBase(BaseModel):
     nombre: Optional[str] = None
     direccion: Optional[str] = None
@@ -8,25 +9,26 @@ class EmpresaBase(BaseModel):
     email: Optional[str] = None
 
     class Config:
-        from_attributes = True
+        orm_mode = True 
 
-class EmpresaCreate(BaseModel):
+
+class EmpresaCreate(EmpresaBase):
     nombre: str
     direccion: str
-    telefono: Optional[str] = None
-    email: Optional[str] = None
 
-    class Config:
-        from_attributes = True
 
 class EmpresaUpdate(EmpresaBase):
-    pass
+    pass 
+
 
 class Empresa(EmpresaBase):
     id_empresa: int
 
-    class Config:
-        from_attributes = True
+
+class EmpresaDelete(BaseModel):
+    id_empresa: int
+
+
 
 class EmpleoBase(BaseModel):
     id_empresa: Optional[int] = None
@@ -36,23 +38,27 @@ class EmpleoBase(BaseModel):
     salario: Optional[float] = None
 
     class Config:
-        from_attributes = True
+        orm_mode = True  
 
-class EmpleoCreate(BaseModel):
+class EmpleoCreate(EmpleoBase):
     id_empresa: int
     titulo: str
     descripcion: str
-    requisitos: Optional[str] = None
     salario: float
 
-    class Config:
-        from_attributes = True
-
 class EmpleoUpdate(EmpleoBase):
-    pass
+    pass  
 
 class Empleo(EmpleoBase):
     id_empleo: int
 
-    class Config:
-        from_attributes = True
+class EmpleoDelete(BaseModel):
+    id_empleo: int
+
+
+class Programa(BaseModel):
+    id: int
+    nombre: str
+    descripcion: str
+    fecha_inicio: str
+    fecha_final: str

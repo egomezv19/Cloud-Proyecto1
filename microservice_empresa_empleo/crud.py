@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from models import Empresa, Empleo
-from schemas import EmpresaCreate, EmpresaUpdate, EmpresaDelete, EmpleoCreate, EmpleoUpdate, EmpleoDelete
+import models
+import schemas
 
 
 # CRUD para Empresa
@@ -20,7 +20,7 @@ def get_empresas(db: Session, skip: int = 0, limit: int = 10):
 def update_empresa(db: Session, empresa_id: int, empresa: schemas.EmpresaUpdate):
     db_empresa = db.query(models.Empresa).filter(models.Empresa.id_empresa == empresa_id).first()
     if db_empresa:
-        empresa_data = empresa.dict(exclude_unset=True)  # Actualiza solo los campos proporcionados
+        empresa_data = empresa.dict(exclude_unset=True)  
         for key, value in empresa_data.items():
             setattr(db_empresa, key, value)
         db.commit()
@@ -53,7 +53,7 @@ def get_empleos(db: Session, skip: int = 0, limit: int = 10):
 def update_empleo(db: Session, empleo_id: int, empleo: schemas.EmpleoUpdate):
     db_empleo = db.query(models.Empleo).filter(models.Empleo.id_empleo == empleo_id).first()
     if db_empleo:
-        empleo_data = empleo.dict(exclude_unset=True)  # Actualiza solo los campos proporcionados
+        empleo_data = empleo.dict(exclude_unset=True)  
         for key, value in empleo_data.items():
             setattr(db_empleo, key, value)
         db.commit()

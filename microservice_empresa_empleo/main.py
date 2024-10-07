@@ -1,13 +1,18 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-from models import Empresa, Empleo
-from schemas import EmpresaCreate, EmpresaUpdate, EmpresaDelete, EmpleoCreate, EmpleoUpdate, EmpleoDelete 
+import models
+import schemas
+import crud
+import httpx
 from database import engine, SessionLocal 
 
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+MS1_URL = 'http://microservicio1:8080/programas'  
+
 
 def get_db():
     db = SessionLocal()
@@ -75,3 +80,13 @@ def delete_empleo(empleo: schemas.EmpleoDelete, db: Session = Depends(get_db)):
     if deleted_empleo is None:
         raise HTTPException(status_code=404, detail="Empleo no encontrado")
     return deleted_empleo
+
+
+
+@app.get("/programas/", response_model=list[schemas.Programa])
+async def get_programas():
+    async with httpx.AsyncClient() as client:
+        response = await client.get(MS1_URL)
+        if response.status_code != 200:
+            raise HTTPException(status_code=response.status_code, detail="no se pudieron obtener los programas :c")
+        return response.json()
