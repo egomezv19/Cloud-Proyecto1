@@ -11,7 +11,7 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-MS1_URL = 'http://microservicio1:8080/programas'  
+MS3_URL = 'http://mongodb:8080/pagos'  
 
 
 def get_db():
@@ -83,10 +83,10 @@ def delete_empleo(empleo: schemas.EmpleoDelete, db: Session = Depends(get_db)):
 
 
 
-@app.get("/programas/", response_model=list[schemas.Programa])
-async def get_programas():
+@app.get("/pagos/", response_model=list[schemas.PagoBase])
+async def get_pagos():
     async with httpx.AsyncClient() as client:
-        response = await client.get(MS1_URL)
+        response = await client.get(MS3_URL)
         if response.status_code != 200:
-            raise HTTPException(status_code=response.status_code, detail="no se pudieron obtener los programas :c")
+            raise HTTPException(status_code=response.status_code, detail="no se pudieron obtener los pagos :c")
         return response.json()

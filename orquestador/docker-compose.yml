@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  orquestador:
+    build: .  # Asegúrate de que el Dockerfile esté en el directorio 'orquestador'
+    container_name: orquestador
+    ports:
+      - "5000:5000"
+    depends_on:
+      - microservicio2
+      - mongodb
+    networks:
+      - microservicios-network
+
+  microservicio2:
+    build: ./microservice_empresa_empleo
+    container_name: microservicio2
+    ports:
+      - "8082:8080"
+    networks:
+      - microservicios-network
+
+  microservicio3:
+    build: ./mongodb-microservice
+    container_name: mongodb
+    ports:
+      - "8080:8080"
+    networks:
+      - microservicios-network
+
+networks:
+  microservicios-network:
+    driver: bridge

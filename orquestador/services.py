@@ -1,18 +1,11 @@
 import httpx
 
-
-MS1_URL_ESTUDIANTES = 'http://microservicio1:8080/estudiantes'
+# URLs de los microservicios
 MS2_URL_EMPRESAS = 'http://microservicio2:8080/empresas'
-MS2_URL_PROGRAMAS = 'http://microservicio2:8080/programas'
-MS3_URL_PAGOS = 'http://microservicio3:8080/pagos'
+MS2_URL_EMPLEOS = 'http://microservicio2:8080/empleos'  
+MS2_URL_PAGOS = 'http://microservicio2:8080/pagos'
+MS3_URL_ALOJAMIENTOS = 'http://mongodb:8080/alojamientos'  
 
-
-async def get_estudiantes():
-    async with httpx.AsyncClient() as client:
-        response = await client.get(MS1_URL_ESTUDIANTES)
-        if response.status_code != 200:
-            raise Exception("Error al obtener estudiantes desde MS1")
-        return response.json()
 
 async def get_empresas():
     async with httpx.AsyncClient() as client:
@@ -22,17 +15,25 @@ async def get_empresas():
         return response.json()
 
 
-async def get_programas():
+async def get_empleos():
     async with httpx.AsyncClient() as client:
-        response = await client.get(MS2_URL_PROGRAMAS)
+        response = await client.get(MS2_URL_EMPLEOS)
         if response.status_code != 200:
-            raise Exception("Error al obtener programas desde MS2 invocando a MS1")
+            raise Exception("Error al obtener empleos desde MS2")
         return response.json()
 
 
 async def get_pagos():
     async with httpx.AsyncClient() as client:
-        response = await client.get(MS3_URL_PAGOS)
+        response = await client.get(MS2_URL_PAGOS)
         if response.status_code != 200:
-            raise Exception("Error al obtener pagos desde MS3")
+            raise Exception("Error al obtener pagos desde MS2")
+        return response.json()
+
+
+async def get_alojamientos():
+    async with httpx.AsyncClient() as client:
+        response = await client.get(MS3_URL_ALOJAMIENTOS)
+        if response.status_code != 200:
+            raise Exception("Error al obtener alojamientos desde MS3")
         return response.json()
