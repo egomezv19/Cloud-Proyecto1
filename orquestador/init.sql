@@ -7,8 +7,6 @@ CREATE TABLE IF NOT EXISTS Empresa (
     email VARCHAR(100)
 );
 
-
-
 -- Crear tabla Empleo
 CREATE TABLE IF NOT EXISTS Empleo (
     id_empleo INT AUTO_INCREMENT PRIMARY KEY,

@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
+from datetime import date
 
 
 class EmpresaBase(BaseModel):
@@ -53,12 +54,11 @@ class Empleo(EmpleoBase):
     id_empleo: int
 
 class EmpleoDelete(BaseModel):
+    
     id_empleo: int
 
-
-class Programa(BaseModel):
-    id: int
-    nombre: str
-    descripcion: str
-    fecha_inicio: str
-    fecha_final: str
+class PagoBase(BaseModel):
+    id_inscripcion: int
+    monto: float
+    fecha_pago: date
+    metodo_pago: str

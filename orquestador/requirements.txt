@@ -1,2 +1,4 @@
 Flask==2.2.3
 httpx==0.24.1
+Werkzeug==2.2.3
+

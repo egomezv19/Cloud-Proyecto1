@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  orquestador:
+    build: . 
+    container_name: orquestador
+    ports:
+      - "5000:5000"
+    depends_on:
+      - microservicio2
+      - microservicio3
+    networks:
+      - microservicios-network
+
+  microservicio2:
+    build: ../microservice_empresa_empleo
+    container_name: microservice2
+    ports:
+      - "8082:8080"
+    environment:
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_PORT=${MYSQL_PORT}
+    depends_on:
+      - db2
+
+    volumes:
+    - ../microservice_empresa_empleo:/app
+    
+    networks:
+      - microservicios-network
+
+  microservicio3:
+    build: ../mongodb-microservice
+    container_name: microservice3
+    ports:
+      - "8080:8080"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/universidad
+    networks:
+      - microservicios-network
+
+  db2:
+    image: mysql:8.0
+    container_name: db2
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:  
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - microservicios-network
+
+networks:
+  microservicios-network:
+    driver: bridge
+
+volumes:
+  db_data:
