@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from services import get_empresas, get_empleos, get_pagos, get_alojamientos
+from urllib.parse import quote as url_quote
 
 app = Flask(__name__)
 
