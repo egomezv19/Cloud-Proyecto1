@@ -3,6 +3,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const alojamientoRoutes = require('./routes/alojamientoRoutes');
 const pagoRoutes = require('./routes/pagoRoutes');
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsDoc = require('swagger-jsdoc');
 require('dotenv').config();
 
 const app = express();
@@ -27,3 +29,28 @@ mongoose.connect(process.env.MONGODB_URI, {
 app.listen(port, () => {
     console.log(`Servidor corriendo en el puerto ${port}`);
 });
+
+const swaggerOptions = {
+    swaggerDefinition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'API de Alojamientos y Pagos',
+            version: '1.0.0',
+            description: 'Documentación de la API para gestionar alojamientos y pagos',
+            contact: {
+                name: 'Soporte',
+                email: 'soporte@tuempresa.com'
+            },
+        },
+        servers: [
+            {
+                url: 'http://localhost:8080',
+                description: 'Servidor de desarrollo'
+            }
+        ],
+    },
+    apis: ['./routes/*.js'], // Asegúrate de que esta ruta apunta a tus archivos de rutas
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
