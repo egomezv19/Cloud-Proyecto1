@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  db_mongo:
+    container_name: db_mongo
+    image: mongo:latest
+    networks:
+      - my-network
+    ports:
+      - "27017:27017"
+
+  ingesta-mongo:
+    build:
+      context: ./  # Ajustamos el contexto para usar el directorio actual
+      dockerfile: Dockerfile
+    container_name: ingesta_mongo
+    depends_on:
+      - db_mongo
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
+      MONGO_COLLECTION: ${MONGO_COLLECTION}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      MONGO_HOST: ${MONGO_HOST}
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
