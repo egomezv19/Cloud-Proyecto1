@@ -11,7 +11,7 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-MS3_URL = 'http://mongodb:8080/pagos'  
+MS3_URL = 'http://3.227.54.126:8080/api/pagos'  
 
 
 def get_db():
@@ -83,7 +83,7 @@ def delete_empleo(empleo: schemas.EmpleoDelete, db: Session = Depends(get_db)):
 
 
 
-@app.get("/pagos/", response_model=list[schemas.PagoBase])
+@app.get("/api/pagos/", response_model=list[schemas.PagoBase])
 async def get_pagos():
     async with httpx.AsyncClient() as client:
         response = await client.get(MS3_URL)
