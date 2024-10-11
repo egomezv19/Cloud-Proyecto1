@@ -1,0 +1,72 @@
+[
+  {
+      "ID_Alojamiento": "A001",
+      "ID_Programa": "PR001",
+      "Descripción": "Alojamiento en residencia universitaria",
+      "Dirección": "Calle Universitaria 123, Ciudad",
+      "Precio": 500.00
+  },
+  {
+      "ID_Alojamiento": "A002",
+      "ID_Programa": "PR002",
+      "Descripción": "Alojamiento en casa de familia",
+      "Dirección": "Avenida Siempre Viva 742, Ciudad",
+      "Precio": 300.00
+  },
+  {
+      "ID_Alojamiento": "A003",
+      "ID_Programa": "PR003",
+      "Descripción": "Alojamiento en residencia estudiantil",
+      "Dirección": "Calle Los Olivos 456, Ciudad",
+      "Precio": 450.00
+  },
+  {
+      "ID_Alojamiento": "A004",
+      "ID_Programa": "PR004",
+      "Descripción": "Alojamiento en casa compartida",
+      "Dirección": "Calle Las Rosas 789, Ciudad",
+      "Precio": 350.00
+  },
+  {
+      "ID_Alojamiento": "A005",
+      "ID_Programa": "PR005",
+      "Descripción": "Alojamiento en departamento",
+      "Dirección": "Calle San Martín 101, Ciudad",
+      "Precio": 600.00
+  },
+  {
+      "ID_Alojamiento": "A006",
+      "ID_Programa": "PR006",
+      "Descripción": "Alojamiento en residencia privada",
+      "Dirección": "Calle La Paz 202, Ciudad",
+      "Precio": 550.00
+  },
+  {
+      "ID_Alojamiento": "A007",
+      "ID_Programa": "PR007",
+      "Descripción": "Alojamiento en albergue",
+      "Dirección": "Calle Miraflores 303, Ciudad",
+      "Precio": 250.00
+  },
+  {
+      "ID_Alojamiento": "A008",
+      "ID_Programa": "PR008",
+      "Descripción": "Alojamiento en condominio",
+      "Dirección": "Avenida Central 404, Ciudad",
+      "Precio": 700.00
+  },
+  {
+      "ID_Alojamiento": "A009",
+      "ID_Programa": "PR009",
+      "Descripción": "Alojamiento en apartamento",
+      "Dirección": "Calle Principal 505, Ciudad",
+      "Precio": 650.00
+  },
+  {
+      "ID_Alojamiento": "A010",
+      "ID_Programa": "PR010",
+      "Descripción": "Alojamiento en casa estudiantil",
+      "Dirección": "Calle Nueva 606, Ciudad",
+      "Precio": 400.00
+  }
+]

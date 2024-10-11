@@ -1,10 +1,72 @@
 [
-    {
+  {
       "ID_Pago": "P001",
       "ID_Inscripción": "I001",
       "Monto": 150.00,
       "Fecha_Pago": "2023-10-01",
       "Metodo_Pago": "Tarjeta de Crédito"
-    }
-  ]
-  
+  },
+  {
+      "ID_Pago": "P002",
+      "ID_Inscripción": "I002",
+      "Monto": 200.00,
+      "Fecha_Pago": "2023-10-02",
+      "Metodo_Pago": "Tarjeta de Débito"
+  },
+  {
+      "ID_Pago": "P003",
+      "ID_Inscripción": "I003",
+      "Monto": 100.00,
+      "Fecha_Pago": "2023-10-03",
+      "Metodo_Pago": "Transferencia Bancaria"
+  },
+  {
+      "ID_Pago": "P004",
+      "ID_Inscripción": "I004",
+      "Monto": 175.00,
+      "Fecha_Pago": "2023-10-04",
+      "Metodo_Pago": "Tarjeta de Crédito"
+  },
+  {
+      "ID_Pago": "P005",
+      "ID_Inscripción": "I005",
+      "Monto": 250.00,
+      "Fecha_Pago": "2023-10-05",
+      "Metodo_Pago": "Efectivo"
+  },
+  {
+      "ID_Pago": "P006",
+      "ID_Inscripción": "I006",
+      "Monto": 300.00,
+      "Fecha_Pago": "2023-10-06",
+      "Metodo_Pago": "Tarjeta de Débito"
+  },
+  {
+      "ID_Pago": "P007",
+      "ID_Inscripción": "I007",
+      "Monto": 120.00,
+      "Fecha_Pago": "2023-10-07",
+      "Metodo_Pago": "Transferencia Bancaria"
+  },
+  {
+      "ID_Pago": "P008",
+      "ID_Inscripción": "I008",
+      "Monto": 180.00,
+      "Fecha_Pago": "2023-10-08",
+      "Metodo_Pago": "Tarjeta de Crédito"
+  },
+  {
+      "ID_Pago": "P009",
+      "ID_Inscripción": "I009",
+      "Monto": 225.00,
+      "Fecha_Pago": "2023-10-09",
+      "Metodo_Pago": "Efectivo"
+  },
+  {
+      "ID_Pago": "P010",
+      "ID_Inscripción": "I010",
+      "Monto": 275.00,
+      "Fecha_Pago": "2023-10-10",
+      "Metodo_Pago": "Tarjeta de Débito"
+  }
+]

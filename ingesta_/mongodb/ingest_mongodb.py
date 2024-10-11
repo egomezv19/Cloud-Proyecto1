@@ -1,34 +1,52 @@
 import os
+import json
 import pandas as pd
 from pymongo import MongoClient
 import boto3
 
 # Conexión a MongoDB
-MONGODB_URI = 'mongodb://mongodb:27017/universidad'  # URI de MongoDB
-client = MongoClient(MONGODB_URI)
-db = client['universidad']  # Nombre de la base de datos
-collection = db['pagos']  # Nombre de la colección
+MONGO_URI = os.getenv('MONGO_URI')
+client = MongoClient(MONGO_URI)
+db = client['universidad']
+collection_pagos = db['pagos']
+collection_alojamientos = db['alojamientos']
 
-# Extracción de datos desde MongoDB
-data = list(collection.find())
-df = pd.DataFrame(data)
 
-# Eliminamos la columna '_id' ya que no es necesario en el CSV/JSON
-if '_id' in df.columns:
-    df = df.drop('_id', axis=1)
+with open('/app/data/pagos_data.json') as f:
+    pagos_data = json.load(f)
+    collection_pagos.insert_many(pagos_data)
 
-# Guardar los datos en un archivo CSV
-csv_file = '/app/data/pagos_data.csv'
-df.to_csv(csv_file, index=False)
+with open('/app/data/alojamientos_data.json') as f:
+    alojamientos_data = json.load(f)
+    collection_alojamientos.insert_many(alojamientos_data)
 
-# También puedes guardarlo en un archivo JSON si lo prefieres
-json_file = '/app/data/pagos_data.json'
-df.to_json(json_file, orient='records')
+print("Inserción de datos completa.")
 
-# Cargar el archivo CSV y JSON a un bucket de S3
+
+pagos = list(collection_pagos.find())
+alojamientos = list(collection_alojamientos.find())
+
+
+df_pagos = pd.DataFrame(pagos)
+df_alojamientos = pd.DataFrame(alojamientos)
+
+
+if '_id' in df_pagos.columns:
+    df_pagos = df_pagos.drop('_id', axis=1)
+if '_id' in df_alojamientos.columns:
+    df_alojamientos = df_alojamientos.drop('_id', axis=1)
+
+csv_file_pagos = '/tmp/pagos_data.csv'
+csv_file_alojamientos = '/tmp/alojamientos_data.csv'
+df_pagos.to_csv(csv_file_pagos, index=False)
+df_alojamientos.to_csv(csv_file_alojamientos, index=False)
+
+# Subir los archivos a S3
 s3 = boto3.client('s3')
-bucket_name = 'ingesta1'  # Nombre del bucket de S3
-s3.upload_file(csv_file, bucket_name, 'pagos_data.csv')
-s3.upload_file(json_file, bucket_name, 'pagos_data.json')
+bucket_name = os.getenv('AWS_S3_BUCKET_NAME')
 
-print("Ingesta de MongoDB completa y archivos subidos a S3.")
+s3.upload_file(csv_file_pagos, bucket_name, 'pagos_data.csv')
+s3.upload_file(csv_file_alojamientos, bucket_name, 'alojamientos_data.csv')
+
+print("Ingesta completa y archivos subidos a S3")
+    

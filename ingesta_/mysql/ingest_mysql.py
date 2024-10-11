@@ -1,45 +1,53 @@
+import os
 import pandas as pd
 import mysql.connector
 import boto3
-from pymongo import MongoClient
 
-# Conectar a la base de datos MySQL
-conn_mysql = mysql.connector.connect(
-    host="db_mysql",
-    user="root",
-    password="nosejajaja123-",
-    database="microservicio2_db"
+# Cargar las variables de entorno desde Docker Compose
+AWS_S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
+MYSQL_USER = os.getenv('MYSQL_USER')
+MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD')
+MYSQL_DATABASE = os.getenv('MYSQL_DATABASE')
+MYSQL_HOST = os.getenv('MYSQL_HOST')
+MYSQL_PORT = 3306
+
+# Establecer conexión directa a la base de datos MySQL usando mysql-connector-python
+conn = mysql.connector.connect(
+    user=MYSQL_USER,
+    password=MYSQL_PASSWORD,
+    host=MYSQL_HOST,
+    port=MYSQL_PORT,
+    database=MYSQL_DATABASE
 )
 
-# Conectar a la base de datos MongoDB
-mongo_client = MongoClient('mongodb://db_mongo:27017/')
-mongo_db = mongo_client['universidad']
-mongo_collection = mongo_db['Alojamientos']
+cursor = conn.cursor(dictionary=True)
 
-# Consulta SQL para MySQL
-query_mysql = "SELECT * FROM Empleo"
-df_mysql = pd.read_sql(query_mysql, conn_mysql)
+query_empresas = "SELECT * FROM Empresa"
+cursor.execute(query_empresas)
+empresas = cursor.fetchall()
 
-# Guardar los datos en un archivo CSV desde MySQL
-csv_file_mysql = '/app/empleos_data.csv'
-df_mysql.to_csv(csv_file_mysql, index=False)
+query_empleos = "SELECT * FROM Empleo"
+cursor.execute(query_empleos)
+empleos = cursor.fetchall()
 
-# Consulta para MongoDB y convertir a DataFrame
-mongo_data = list(mongo_collection.find())
-df_mongo = pd.DataFrame(mongo_data)
+df_empresas = pd.DataFrame(empresas)
+df_empleos = pd.DataFrame(empleos)
 
-# Guardar los datos en un archivo CSV desde MongoDB
-csv_file_mongo = '/app/alojamientos_data.csv'
-df_mongo.to_csv(csv_file_mongo, index=False)
+csv_file_empresas = '/app/data/empresas_data.csv'
+csv_file_empleos = '/app/data/empleos_data.csv'
 
-# Configurar el cliente S3
+df_empresas.to_csv(csv_file_empresas, index=False)
+df_empleos.to_csv(csv_file_empleos, index=False)
+
+# Conectar a S3 usando boto3
 s3 = boto3.client('s3')
-bucket_name = 'your-s3-bucket-name'
 
-# Subir archivos CSV a S3
-s3.upload_file(csv_file_mysql, bucket_name, 'empleos_data.csv')
-s3.upload_file(csv_file_mongo, bucket_name, 'alojamientos_data.csv')
+# Subir los archivos CSV al bucket
+s3.upload_file(csv_file_empresas, AWS_S3_BUCKET_NAME, 'empresas_data.csv')
+s3.upload_file(csv_file_empleos, AWS_S3_BUCKET_NAME, 'empleos_data.csv')
 
-# Cerrar las conexiones
-conn_mysql.close()
-mongo_client.close()
+print("Ingesta de datos completada y archivos subidos a S3")
+
+# Cerrar la conexión a la base de datos
+cursor.close()
+conn.close()

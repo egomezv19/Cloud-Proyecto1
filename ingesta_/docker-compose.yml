@@ -1,31 +1,27 @@
-version: '3.9'
+version: '3.8'
 
 services:
-  db_mongo:
-    container_name: db_mongo
-    image: mongo:latest
+  ingesta_mysql:
+    image: nataliawg/ingesta_mysql:v1
+    container_name: ingesta_mysql
+    env_file:
+      - .env
+    command: ["python", "ingest_mysql.py"]
     networks:
-      - my-network
-    ports:
-      - "27017:27017"
+      - ingesta_net
 
-  ingesta-mongo:
-    build:
-      context: ./  # Ajustamos el contexto para usar el directorio actual
-      dockerfile: Dockerfile
+  ingesta_mongo:
+    image: nataliawg/mongodb:v1
     container_name: ingesta_mongo
-    depends_on:
-      - db_mongo
-    environment:
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-      AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
-      MONGO_COLLECTION: ${MONGO_COLLECTION}
-      MONGO_DATABASE: ${MONGO_DATABASE}
-      MONGO_HOST: ${MONGO_HOST}
+    env_file:
+      - .env
+    command: ["python", "ingest_mongodb.py"]
     networks:
-      - my-network
+      - ingesta_net
 
 networks:
-  my-network:
+  ingesta_net:
     driver: bridge
+
+volumes:
+  db_data:

@@ -49,7 +49,7 @@ const swaggerOptions = {
             }
         ],
     },
-    apis: ['./routes/*.js'], // Asegúrate de que esta ruta apunta a tus archivos de rutas
+    apis: ['./routes/*.js'],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
