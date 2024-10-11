@@ -3,7 +3,6 @@ import pandas as pd
 import mysql.connector
 import boto3
 
-# Cargar las variables de entorno desde docker compose
 AWS_S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
 MYSQL_USER = os.getenv('MYSQL_USER')
 MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD')
@@ -11,7 +10,7 @@ MYSQL_DATABASE = os.getenv('MYSQL_DATABASE')
 MYSQL_HOST = os.getenv('MYSQL_HOST')
 MYSQL_PORT = 3306
 
-# Establecer conexión directa a la base de datos MySQL usando mysql-connector-python
+
 conn = mysql.connector.connect(
     user="root", 
     password="nosejajaja123-",  

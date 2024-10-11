@@ -2,20 +2,46 @@ version: '3.8'
 
 services:
   ingesta_mysql:
-    image: nataliawg/ingesta_mysql:v1
+    image: nataliawg/ingesta_mysql:v4
     container_name: ingesta_mysql
-    env_file:
-      - .env
-    command: ["python", "ingest_mysql.py"]
+    depends_on:
+      - db2  # Dependencia de MySQL
+    environment:
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_HOST=db2
     networks:
       - ingesta_net
+    volumes:
+      - ./mysql:/app/data  # Volumen para data dentro del contenedor
 
   ingesta_mongo:
-    image: nataliawg/mongodb:v1
+    image: nataliawg/ingesta_mongo:v3
     container_name: ingesta_mongo
-    env_file:
-      - .env
-    command: ["python", "ingest_mongodb.py"]
+    depends_on:
+      - db2
+    environment:
+      - MONGO_DATABASE=${MONGO_DATABASE}
+      - MONGO_HOST=db_mongo
+          
+          
+    networks:
+      - ingesta_net
+    volumes:
+      - ./mongodb:/app/data  # Volumen para data dentro del contenedor
+
+  db2:
+    image: mysql:8.0
+    container_name: db2
+    ports:
+      - "3306:3306"  
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    volumes:
+      - db_data:/var/lib/mysql  # Volumen persistente para la base de datos
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - ingesta_net
 
