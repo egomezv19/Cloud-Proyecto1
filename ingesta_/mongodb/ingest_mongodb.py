@@ -12,15 +12,15 @@ collection_pagos = db['pagos']
 collection_alojamientos = db['alojamientos']
 
 
-with open('/app/data/pagos_data.json') as f:
+with open('/data/pagos_data.json') as f:
     pagos_data = json.load(f)
     collection_pagos.insert_many(pagos_data)
 
-with open('/app/data/alojamientos_data.json') as f:
+with open('/data/alojamientos_data.json') as f:
     alojamientos_data = json.load(f)
     collection_alojamientos.insert_many(alojamientos_data)
 
-print("Inserción de datos completa.")
+print("Inserción de datos completa")
 
 
 pagos = list(collection_pagos.find())

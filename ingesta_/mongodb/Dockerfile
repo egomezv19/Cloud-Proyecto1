@@ -10,7 +10,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY ingest_mongodb.py .
 
 # Copiar la carpeta de datos (para insertar)
-COPY data/ ./data/
+COPY ./data/pagos_data.json /app/data/pagos_data.json
+COPY ./data/alojamientos_data.json /app/data/alojamientos_data.json
 
 # Comando para ejecutar el script de ingesta
 ENTRYPOINT ["python", "ingest_mongodb.py"]
